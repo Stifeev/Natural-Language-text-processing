@@ -201,16 +201,20 @@ int wmain(int argc, wchar_t *argv[])
 
                 if ((len + 1) == buf_size[id] && buf[id][len - 1] != L'\n') // overflow
                 {
-                    buf_size[id] *= 2;
+                    
+                    INFO_HANDLE("Reallocating memory for buffer in thread %d", id);
 
-                    INFO_HANDLE("Reallocate memory for buffer in thread %d", id);
-
-                    new_buf = (wchar_t *)realloc(buf[id], buf_size[id] * sizeof(wchar_t));
+                    WARNING_HANDLE(new_buf = (wchar_t *)realloc(buf[id], 2 * buf_size[id] * sizeof(wchar_t)), 
+                                   "Not enough memory to allocate on %d thread", id);
                     buf[id] = new_buf;
-                    new_buf = (wchar_t *)realloc(tokens[id], buf_size[id] * sizeof(wchar_t));
+                    
+                    WARNING_HANDLE(new_buf = (wchar_t *)realloc(tokens[id], 2 * buf_size[id] * sizeof(wchar_t)),
+                                   "Not enough memory to allocate on %d thread", id);
                     tokens[id] = new_buf;
 
+                    buf_size[id] *= 2;
                     offset = len;
+
                     continue;
                 }
 
