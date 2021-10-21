@@ -44,7 +44,7 @@ do                                                                  \
 }                                                                   \
 while(0);
 
-// Начальный размер буфера
+// РќР°С‡Р°Р»СЊРЅС‹Р№ СЂР°Р·РјРµСЂ Р±СѓС„РµСЂР°
 #define BUF_SIZE 50000 
 
 set<std::wstring> EXTENSIONS = { L".json", L".jsonlines", L".txt", L".xml" };
@@ -53,8 +53,8 @@ bool is_letter(wchar_t c)
 {
     c = towlower(c);
     return L'a' <= c && c <= L'z' ||
-           L'а' <= c && c <= L'я' ||
-           c == L'ё';
+           L'Р°' <= c && c <= L'СЏ' ||
+           c == L'С‘';
 }
 
 bool is_number(wchar_t c)
@@ -80,7 +80,7 @@ int get_tokens(const wchar_t *str,
             j++;
             end = false;
         }
-        else if(!end) // Разделитель найден
+        else if(!end) // Р Р°Р·РґРµР»РёС‚РµР»СЊ РЅР°Р№РґРµРЅ
         {
             tokens[j] = ' ';
             j++;
@@ -90,7 +90,7 @@ int get_tokens(const wchar_t *str,
     }
 
     tokens[j - 1] = L'\0';
-    *tokens_size = j - 1; // без /0
+    *tokens_size = j - 1; // Р±РµР· /0
     return n_tokens;
 }
 
@@ -106,14 +106,14 @@ int wmain(int argc, wchar_t *argv[])
     double total_tokens=0, avg_tokens=0,
            total_size=0; 
     FILE *fpi=NULL, *fpo=NULL;
-    path path2corpus = L".", path2tokenscorpus = L"./Токены", 
+    path path2corpus = L".", path2tokenscorpus = L"./РўРѕРєРµРЅС‹", 
          path2json, path2tokens;
     vector<path> pathes;
 
     high_resolution_clock::time_point time_start, time_end;
     milliseconds time_span;
 
-    /* Разбор входных аргументов */
+    /* Р Р°Р·Р±РѕСЂ РІС…РѕРґРЅС‹С… Р°СЂРіСѓРјРµРЅС‚РѕРІ */
     for (i = 1; i < argc; i++)
     {
         if (wcscmp(argv[i], L"-i") == 0)
@@ -185,7 +185,7 @@ int wmain(int argc, wchar_t *argv[])
             n_tokens = get_tokens(buf, tokens, &tokens_size);
             if (n_tokens > 0)
             {
-                fwprintf(fpo, L"%d %d ", n_tokens, tokens_size); // Пишем количество токенов и размер буфера (в wchar'ах) для считывания (без учёта конца строки)
+                fwprintf(fpo, L"%d %d ", n_tokens, tokens_size); // РџРёС€РµРј РєРѕР»РёС‡РµСЃС‚РІРѕ С‚РѕРєРµРЅРѕРІ Рё СЂР°Р·РјРµСЂ Р±СѓС„РµСЂР° (РІ wchar'Р°С…) РґР»СЏ СЃС‡РёС‚С‹РІР°РЅРёСЏ (Р±РµР· СѓС‡С‘С‚Р° РєРѕРЅС†Р° СЃС‚СЂРѕРєРё)
                 fputws(tokens, fpo);
                 fputwc(L'\n', fpo);
             }
@@ -197,7 +197,7 @@ int wmain(int argc, wchar_t *argv[])
         if (fpi) fclose(fpi);
     }
 
-    total_size *= sizeof(wchar_t); // Переводим в байты
+    total_size *= sizeof(wchar_t); // РџРµСЂРµРІРѕРґРёРј РІ Р±Р°Р№С‚С‹
     time_end = high_resolution_clock::now();
     time_span = std::chrono::duration_cast<milliseconds>(time_end - time_start);
 
