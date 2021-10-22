@@ -109,6 +109,10 @@ int wmain(int argc, wchar_t *argv[])
     high_resolution_clock::time_point time_start, time_end;
     milliseconds time_span;
 
+    /* Гарантия работы ERROR_HANDLE */
+    memset(buf, 0, OMP_NUM_THREADS * sizeof(wchar_t *));
+    memset(tokens, 0, OMP_NUM_THREADS * sizeof(wchar_t *));
+
     /* Разбор входных аргументов */
     for (i = 1; i < argc; i++)
     {
@@ -129,9 +133,6 @@ int wmain(int argc, wchar_t *argv[])
             continue;
         }
     }
-
-    memset(buf, 0, OMP_NUM_THREADS * sizeof(wchar_t *));
-    memset(tokens, 0, OMP_NUM_THREADS * sizeof(wchar_t *));
 
     /* Выделение памяти */
     for (i = 0; i < OMP_NUM_THREADS; i++)
