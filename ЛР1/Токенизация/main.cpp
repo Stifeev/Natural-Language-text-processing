@@ -130,11 +130,12 @@ int wmain(int argc, wchar_t *argv[])
         }
     }
 
+    memset(buf, 0, OMP_NUM_THREADS * sizeof(wchar_t *));
+    memset(tokens, 0, OMP_NUM_THREADS * sizeof(wchar_t *));
+
     /* Выделение памяти */
     for (i = 0; i < OMP_NUM_THREADS; i++)
     {
-        buf[i] = NULL;
-        tokens[i] = NULL;
         buf_size[i] = BUF_SIZE;
 
         total_tokens[i] = 0;
@@ -175,9 +176,9 @@ int wmain(int argc, wchar_t *argv[])
     #pragma omp parallel num_threads(OMP_NUM_THREADS)                                   \
                          shared(buf, tokens, buf_size, pathes_ptr,                      \
                                 total_tokens, avg_tokens)                               \
-                         private(path2json, path2tokens, fpi, fpo, i, len, offset,      \
+                         private(path2json, path2tokens, i, len, offset,                \
                                  new_buf, n_tokens, tokens_size)                        \
-                         firstprivate(n_pathes, path2tokenscorpus)
+                         firstprivate(n_pathes, path2tokenscorpus, fpo, fpi)
     {
         int id = omp_get_thread_num(),
             id_offset = OMP_NUM_THREADS;
